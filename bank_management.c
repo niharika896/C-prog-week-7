@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-int customer_count = 0;
+int customer_count = 0; //global variable
 
 struct customer {
     int account_number;
@@ -10,17 +10,17 @@ struct customer {
     int balance;
 };
 
-int isAccountNumberUnique(int account_number, struct customer *bank) {
-    for (int i = 0; i < customer_count; i++) {
-        if (bank[i].account_number == account_number) {
+int isAccountNumberUnique(int account_number, struct customer *bank) {  //single * because we will be passing bank which is an array that contains all the structures
+    for (int i = 0; i < customer_count; i++) {                          //we will be passing starting address of bank and *bank is the first structure 
+        if (bank[i].account_number == account_number) {                //now here bank refers to the array bank and can be used like a normal array
             return 0; // Account number is not unique
         }
     }
     return 1; // Account number is unique
 }
 
-void addCustomer(struct customer **bank) {
-    int account_number;
+void addCustomer(struct customer **bank) { //here we are passing the address of the address of bank because this time realloc function
+    int account_number;                    //will be used which will play with the address of bank
     int unique = 0;
     while (!unique) {
         printf("Enter account number: ");
@@ -28,8 +28,8 @@ void addCustomer(struct customer **bank) {
         fflush(stdin);
 
         // Check if the account number is unique
-        unique = isAccountNumberUnique(account_number, *bank);
-        if (!unique) {
+        unique = isAccountNumberUnique(account_number, *bank); //int isAccountNumberUnique(int account_number, struct customer *bank)
+        if (!unique) {                                            // *bank is the address of bank in addCustomer is passed to isAccountNumberUnique
             printf("Account number already exists. Please enter a unique account number.\n");
             addCustomer(bank);
         }
